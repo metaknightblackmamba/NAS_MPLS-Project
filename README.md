@@ -10,7 +10,7 @@ To run this project, install those dependancies:
 * Make sure you are on Linux, not a must but recommended =)
 * Make sure you already install dependancy for python language and NodeJs
 
-## RUN
+## Run/build
 ```
 $ ./let-see-our-code.py
 ```
