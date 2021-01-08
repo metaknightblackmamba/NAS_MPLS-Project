@@ -1,0 +1,29 @@
+{
+  "version": "15.2",
+  "R1": {
+    "GigabitEthernet": {
+      "name": "GigabitEthernet1/0",
+      "ip": "192.168.100.2",
+      "mask": "255.255.255.0"
+    },
+    "GigabitEthernet": {
+      "name": "GigabitEthernet2/0",
+      "ip": "192.168.101.1",
+      "mask": "255.255.255.0"
+    },
+    "ospf_area": "0"
+  },
+  "R2": {
+    "GigabitEthernet": {
+      "name": "GigabitEthernet1/0",
+      "ip": "192.168.102.1",
+      "mask": "255.255.255.0"
+    },
+    "GigabitEthernet": {
+      "name": "GigabitEthernet2/0",
+      "ip": "192.168.101.2",
+      "mask": "255.255.255.0"
+    },
+    "ospf_area": "0"
+  }
+}
