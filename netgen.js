@@ -22,13 +22,13 @@ for(let k in data){
   }
 }
 
-//console.log(routers.length + " routers found : " + routers)
+console.log(routers.length + " routers found : " + routers)
 
 
 //For earch router that we do
 for (let i = 0; i < routers.length; i++) {
 
-  console.log(data[routers[i]].interfaces[0])
+  //console.log(data[routers[i]].interfaces[0])
 
   //Creat text for conf file
   text = "!\n\n!\n"
