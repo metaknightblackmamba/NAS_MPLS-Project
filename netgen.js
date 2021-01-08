@@ -2,7 +2,7 @@
 
 const fs = require("fs")
 
-let file = fs.readFileSync("test.json")
+let file = fs.readFileSync("norm.json")
 let data = JSON.parse(file)
 
 //console.log(data.version)
