@@ -2,6 +2,12 @@
 
 const fs = require("fs")
 
+function ipAndMask(_ip, _mask){
+  ip = _ip.split(".")
+  mask = _mask.split(".")
+  return ((Number(ip[0]) & Number(mask[0])) + "." + (Number(ip[1]) & Number(mask[1])) + "." + (Number(ip[2]) & Number(mask[2])) + "." + (Number(ip[3]) & Number(mask[3])))
+}
+
 let file = fs.readFileSync("norm.json")
 let data = JSON.parse(file)
 
@@ -37,7 +43,20 @@ for (let i = 0; i < routers.length; i++) {
     let inter = data[routers[i]].interfaces[g]
     text += "interface " + inter.name + "\n"
     text += " ip address " + inter.ip + " " + inter.mask + "\n"
-    text += " negotiation auto\n!\n"
+    text += " negotiation auto\n"
+    if(data[routers[i]].mpls){
+      text += " mpls ip\n"
+    }
+    text += "!\n"
+  }
+
+  if(data[routers[i]].ospf_area){
+    text += "router ospf 10000\n"
+    for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+      let inter = data[routers[i]].interfaces[g]
+      text += " network " + ipAndMask(inter.ip, inter.mask) + "\n"
+    }
+    text += "!\n"
   }
 
 
