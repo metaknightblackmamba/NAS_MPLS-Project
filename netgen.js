@@ -63,7 +63,38 @@ for (let i = 0; i < routers.length; i++) {
     }
     text += "!\n"
   }
+  
+  // Add banner //
+  text += "banner motd " + data[routers[i]].banner.msg + "\n!\n"
 
+  if(data[routers[i]].console){
+    var pass_con = "password"
+    text += "!\n"
+    text += "line con 0\n exec-timeout 0 0\n privilege level 15\n password " + pass_con +"\n logging synchronous\n login\n stopbits 1\n"
+  }else{
+    text += "!\n"
+    text += "line con 0\n exec-timeout 0 0\n privilege level 15\n logging synchronous\n stopbits 1\n"
+  }
+
+  if(data[routers[i]].line_aux){
+    var pass_aux = "password"
+    text += "!\n"
+    text += "line aux 0\n exec-timeout 0 0\n privilege level 15\n password " + pass_aux +"\n logging synchronous\n login\n stopbits 1\n"
+  }else{
+    text += "!\n"
+    text += "line aux 0\n exec-timeout 0 0\n privilege level 15\n logging synchronous\n stopbits 1\n"
+  }
+  
+  if(data[routers[i]].line_vty){
+    var pass_vty04 = "password"
+    var pass_vty515 = "password"
+    text += "!\n"
+    text += "line vty 0 4\n password " + pass_vty04 +"\n login\n"
+    text += "line vty 5 15\n password " + pass_vty515 +"\n login\n"
+  }else{
+    text += "!\n"
+    text += "line vty 0 4\n login\n"
+  }
 
   //Write text to conf file
   fs.writeFile(routers[i] + "_startup-config.cfg", text, function (err) {

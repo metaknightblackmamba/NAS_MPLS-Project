@@ -12,6 +12,13 @@
       "ip": "192.168.101.1",
       "mask": "255.255.255.0"
     }],
+    "banner": {
+      "msg": "WARNING ACCESS RETRICTED"
+    },
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
     "ospf_area": "0",
     "mpls": true
   },
@@ -27,6 +34,57 @@
       "ip": "192.168.101.2",
       "mask": "255.255.255.0"
     }],
+    "banner": {
+      "msg": "WARNING ACCESS RETRICTED"
+    },
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "mpls": true
+  },
+  "PE1": {
+    "interfaces": [
+      {
+      "name": "GigabitEthernet1/0",
+      "ip": "192.168.100.1",
+      "mask": "255.255.255.0"
+    },
+      {
+      "name": "Loopback1",
+      "ip": "1.1.1.1",
+      "mask": "255.255.255.255"
+    }],
+    "banner": {
+      "msg": "WARNING ACCESS RETRICTED"
+    },
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "mpls": true
+  },
+  "PE2": {
+    "interfaces": [
+      {
+      "name": "GigabitEthernet1/0",
+      "ip": "192.168.102.2",
+      "mask": "255.255.255.0"
+    },
+      {
+      "name": "Loopback2",
+      "ip": "2.2.2.2",
+      "mask": "255.255.255.255"
+    }],
+    "banner": {
+      "msg": "WARNING ACCESS RETRICTED"
+    },
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
     "ospf_area": "0",
     "mpls": true
   }
