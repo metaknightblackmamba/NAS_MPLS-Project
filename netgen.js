@@ -16,13 +16,13 @@ for(let k in data){
   }
 }
 
-console.log(routers.length + " routers found : " + routers)
+//console.log(routers.length + " routers found : " + routers)
 
 
-
+//For earch router that we do
 for (let i = 0; i < routers.length; i++) {
 
-  //console.log(data[routers[i]])
+  console.log(data[routers[i]].interfaces[0])
 
   //Creat text for conf file
   text = "!\n\n!\n"
@@ -32,6 +32,13 @@ for (let i = 0; i < routers.length; i++) {
   text += "boot-start-marker\nboot-end-marker\n!\n"
   text += "no aaa new-model\nno ip icmp rate-limit unreachable\nip cef\n!\n"
   text += "no ip domain lookup\nno ipv6 cef\n!\n"
+
+  for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+    let inter = data[routers[i]].interfaces[g]
+    text += "interface " + inter.name + "\n"
+    text += " ip address " + inter.ip + " " + inter.mask + "\n"
+    text += " negotiation auto\n!\n"
+  }
 
 
   //Write text to conf file
