@@ -16,8 +16,20 @@ for(let k in data){
   }
 }
 
-console.log(routers.length + " routers found !")
+console.log(routers.length + " routers found : " + routers)
+
+
 
 for (let i = 0; i < routers.length; i++) {
-  console.log(data[routers[i]])
+
+  //console.log(data[routers[i]])
+
+  //Creat text for conf file
+  text = "!\n\n!\n"
+  text += "version " + data.version + "\n"
+
+  //Write text to conf file
+  fs.writeFile(routers[i] + "_startup-config.cfg", text, function (err) {
+  if (err) return console.log(err);
+  });
 }
