@@ -8,6 +8,11 @@ function ipAndMask(_ip, _mask){
   return ((Number(ip[0]) & Number(mask[0])) + "." + (Number(ip[1]) & Number(mask[1])) + "." + (Number(ip[2]) & Number(mask[2])) + "." + (Number(ip[3]) & Number(mask[3])))
 }
 
+function invertMask(_mask){
+  mask = _mask.split(".")
+  return (Math.abs(Number(mask[0]) - 255) + "." + Math.abs(Number(mask[1]) - 255) + "." + Math.abs(Number(mask[2]) - 255) + "." + Math.abs(Number(mask[3]) - 255))
+}
+
 let file = fs.readFileSync("norm.json")
 let data = JSON.parse(file)
 
@@ -54,7 +59,7 @@ for (let i = 0; i < routers.length; i++) {
     text += "router ospf 10000\n"
     for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
       let inter = data[routers[i]].interfaces[g]
-      text += " network " + ipAndMask(inter.ip, inter.mask) + "\n"
+      text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
     }
     text += "!\n"
   }
