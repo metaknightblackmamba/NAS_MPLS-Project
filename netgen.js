@@ -27,6 +27,12 @@ for (let i = 0; i < routers.length; i++) {
   //Creat text for conf file
   text = "!\n\n!\n"
   text += "version " + data.version + "\n"
+  text += "service timestamps debug datetime msec\nservice timestamps log datetime msec\n!\n"
+  text += "hostname " + routers[i] + "\n!\n"
+  text += "boot-start-marker\nboot-end-marker\n!\n"
+  text += "no aaa new-model\nno ip icmp rate-limit unreachable\nip cef\n!\n"
+  text += "no ip domain lookup\nno ipv6 cef\n!\n"
+
 
   //Write text to conf file
   fs.writeFile(routers[i] + "_startup-config.cfg", text, function (err) {

@@ -12,9 +12,5 @@ To run this project, install those dependancies:
 
 ## Run/build
 ```
-$ ./let-see-our-code.py
-```
-or
-```
-$ ./let-see-our-code.js
+$ ./netgen.js
 ```
