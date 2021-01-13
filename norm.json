@@ -3,89 +3,69 @@
   "R1": {
     "interfaces": [
       {
-      "name": "GigabitEthernet1/0",
-      "ip": "192.168.100.2",
-      "mask": "255.255.255.0"
-    },
+      "router": "PE1",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
       {
-      "name": "GigabitEthernet2/0",
-      "ip": "192.168.101.1",
-      "mask": "255.255.255.0"
+      "router": "R2",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
     }],
-    "banner": {
-      "msg": "WARNING ACCESS RETRICTED"
-    },
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "mpls": true
+    "ospf_area": "0"
   },
   "R2": {
     "interfaces": [
       {
-      "name": "GigabitEthernet1/0",
-      "ip": "192.168.102.1",
-      "mask": "255.255.255.0"
-    },
+      "router": "PE2",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
       {
-      "name": "GigabitEthernet2/0",
-      "ip": "192.168.101.2",
-      "mask": "255.255.255.0"
+      "router": "R1",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
     }],
-    "banner": {
-      "msg": "WARNING ACCESS RETRICTED"
-    },
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "mpls": true
+    "ospf_area": "0"
   },
   "PE1": {
     "interfaces": [
       {
-      "name": "GigabitEthernet1/0",
-      "ip": "192.168.100.1",
-      "mask": "255.255.255.0"
+      "router": "R1",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
     },
       {
-      "name": "Loopback1",
-      "ip": "1.1.1.1",
-      "mask": "255.255.255.255"
+      "name": "loopback"
     }],
-    "banner": {
-      "msg": "WARNING ACCESS RETRICTED"
-    },
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "mpls": true
+    "ospf_area": "0"
   },
   "PE2": {
     "interfaces": [
       {
-      "name": "GigabitEthernet1/0",
-      "ip": "192.168.102.2",
-      "mask": "255.255.255.0"
+      "router": "R2",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
     },
       {
-      "name": "Loopback2",
-      "ip": "2.2.2.2",
-      "mask": "255.255.255.255"
+      "name": "loopback"
     }],
-    "banner": {
-      "msg": "WARNING ACCESS RETRICTED"
-    },
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "mpls": true
+    "ospf_area": "0"
   }
 }
