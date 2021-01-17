@@ -29,6 +29,55 @@ for(let k in data){
 
 console.log(routers.length + " routers found : " + routers)
 
+network = {}
+current_subnet = 100
+current_loop = 1
+subnet_host = {}
+
+for (let i = 0; i < routers.length; i++) {
+
+  for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+
+    let inter = data[routers[i]].interfaces[g]
+
+    if(!inter.loopback){
+      console.log(inter)
+
+      let net_buff = null
+
+      for(let k in network){
+        console.log(network[k])
+        console.log("self " + routers[i] + " other " + inter.router)
+        if((network[k].includes(routers[i])) && (network[k].includes(inter.router))){
+          net_buff = "192.168." + k + "." + (network[k].indexOf(routers[i]) + 1)
+          //console.log(net_buff)
+        }
+      }
+
+      if(net_buff == null){
+        array_buff = []
+        array_buff.push(routers[i])
+        array_buff.push(inter.router)
+        network[current_subnet] = array_buff
+        net_buff = "192.168." + current_subnet + ".1"
+        current_subnet++
+      }
+
+      data[routers[i]].interfaces[g].ip = net_buff
+      data[routers[i]].interfaces[g].mask = "255.255.0.0"
+      console.log(net_buff)
+      //console.log(network)
+
+    }
+
+
+
+  }
+
+}
+
+
+
 
 //For earch router that we do
 for (let i = 0; i < routers.length; i++) {
@@ -46,26 +95,33 @@ for (let i = 0; i < routers.length; i++) {
 
   for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
     let inter = data[routers[i]].interfaces[g]
-    text += "interface " + inter.name + "\n"
-    text += " ip address " + inter.ip + " " + inter.mask + "\n"
-    text += " negotiation auto\n"
-    if(data[routers[i]].mpls){
-      text += " mpls ip\n"
+    if(inter.loopback){
+      text += "interface Loopback0\n"
+      text += " ip address " + current_loop + "." + current_loop + "." + current_loop + "." + current_loop + " 255.255.255.255\n"
+      text += "!\n"
+      current_loop++
     }
-    text += "!\n"
+    else{
+      text += "interface " + inter.router + "\n"
+      text += " ip address " + inter.ip + " " + inter.mask + "\n"
+      text += " negotiation auto\n"
+      if(data[routers[i]].mpls){
+        text += " mpls ip\n"
+      }
+      text += "!\n"
+    }
   }
 
   if(data[routers[i]].ospf_area){
     text += "router ospf 10000\n"
     for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
       let inter = data[routers[i]].interfaces[g]
-      text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
+      if(!inter.loopback){
+        text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
+      }
     }
     text += "!\n"
   }
-  
-  // Add banner //
-  text += "banner motd " + data[routers[i]].banner.msg + "\n!\n"
 
   if(data[routers[i]].console){
     var pass_con = "password"
@@ -84,7 +140,7 @@ for (let i = 0; i < routers.length; i++) {
     text += "!\n"
     text += "line aux 0\n exec-timeout 0 0\n privilege level 15\n logging synchronous\n stopbits 1\n"
   }
-  
+
   if(data[routers[i]].line_vty){
     var pass_vty04 = "password"
     var pass_vty515 = "password"

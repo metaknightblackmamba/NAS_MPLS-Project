@@ -44,7 +44,7 @@
       "mpls": true
     },
       {
-      "name": "loopback"
+      "loopback": true
     }],
     "console": false,
     "line_vty": false,
@@ -60,7 +60,7 @@
       "mpls": true
     },
       {
-      "name": "loopback"
+      "loopback": true
     }],
     "console": false,
     "line_vty": false,
