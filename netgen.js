@@ -93,6 +93,8 @@ for (let i = 0; i < routers.length; i++) {
   text += "no aaa new-model\nno ip icmp rate-limit unreachable\nip cef\n!\n"
   text += "no ip domain lookup\nno ipv6 cef\n!\n"
 
+  let _interface = 1
+
   for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
     let inter = data[routers[i]].interfaces[g]
     if(inter.loopback){
@@ -102,7 +104,8 @@ for (let i = 0; i < routers.length; i++) {
       current_loop++
     }
     else{
-      text += "interface " + inter.router + "\n"
+      text += "interface GigabitEthernet" + _interface + "/0\n"
+      _interface++
       text += " ip address " + inter.ip + " " + inter.mask + "\n"
       text += " negotiation auto\n"
       if(data[routers[i]].mpls){
