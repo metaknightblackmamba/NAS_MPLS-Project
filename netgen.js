@@ -41,13 +41,13 @@ for (let i = 0; i < routers.length; i++) {
     let inter = data[routers[i]].interfaces[g]
 
     if(!inter.loopback){
-      console.log(inter)
+      //console.log(inter)
 
       let net_buff = null
 
       for(let k in network){
-        console.log(network[k])
-        console.log("self " + routers[i] + " other " + inter.router)
+        //console.log(network[k])
+        //console.log("self " + routers[i] + " other " + inter.router)
         if((network[k].includes(routers[i])) && (network[k].includes(inter.router))){
           net_buff = "192.168." + k + "." + (network[k].indexOf(routers[i]) + 1)
           //console.log(net_buff)
@@ -65,7 +65,7 @@ for (let i = 0; i < routers.length; i++) {
 
       data[routers[i]].interfaces[g].ip = net_buff
       data[routers[i]].interfaces[g].mask = "255.255.0.0"
-      console.log(net_buff)
+      //console.log(net_buff)
       //console.log(network)
 
     }
