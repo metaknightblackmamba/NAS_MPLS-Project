@@ -109,7 +109,7 @@ for (let i = 0; i < routers.length; i++) {
       _interface++
       text += " ip address " + inter.ip + " " + inter.mask + "\n"
       text += " negotiation auto\n"
-      if(data[routers[i]].mpls){
+      if(inter.mpls){
         text += " mpls ip\n"
       }
       text += "!\n"
