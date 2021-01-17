@@ -104,7 +104,8 @@ for (let i = 0; i < routers.length; i++) {
       current_loop++
     }
     else{
-      text += "interface GigabitEthernet" + _interface + "/0\n"
+      //text += "interface GigabitEthernet" + _interface + "/0\n"
+      text += "interface " + inter.port + "\n"
       _interface++
       text += " ip address " + inter.ip + " " + inter.mask + "\n"
       text += " negotiation auto\n"
