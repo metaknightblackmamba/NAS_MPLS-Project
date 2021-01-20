@@ -64,10 +64,15 @@ for (let i = 0; i < routers.length; i++) {
       }
 
       data[routers[i]].interfaces[g].ip = net_buff
-      data[routers[i]].interfaces[g].mask = "255.255.0.0"
+      data[routers[i]].interfaces[g].mask = "255.255.255.0"
       //console.log(net_buff)
       //console.log(network)
 
+    }
+    else{
+      data[routers[i]].interfaces[g].ip = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
+      data[routers[i]].interfaces[g].mask = "255.255.255.255"
+      data[routers[i]].interfaces[g].port = "Loopback0"
     }
 
 
@@ -96,33 +101,25 @@ for (let i = 0; i < routers.length; i++) {
   let _interface = 1
 
   for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+
     let inter = data[routers[i]].interfaces[g]
-    if(inter.loopback){
-      text += "interface Loopback0\n"
-      text += " ip address " + current_loop + "." + current_loop + "." + current_loop + "." + current_loop + " 255.255.255.255\n"
-      text += "!\n"
-      current_loop++
+
+    //text += "interface GigabitEthernet" + _interface + "/0\n"
+    text += "interface " + inter.port + "\n"
+    _interface++
+    text += " ip address " + inter.ip + " " + inter.mask + "\n"
+    text += " negotiation auto\n"
+    if(inter.mpls){
+      text += " mpls ip\n"
     }
-    else{
-      //text += "interface GigabitEthernet" + _interface + "/0\n"
-      text += "interface " + inter.port + "\n"
-      _interface++
-      text += " ip address " + inter.ip + " " + inter.mask + "\n"
-      text += " negotiation auto\n"
-      if(inter.mpls){
-        text += " mpls ip\n"
-      }
-      text += "!\n"
-    }
+    text += "!\n"
   }
 
   if(data[routers[i]].ospf_area){
     text += "router ospf 10000\n"
     for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
       let inter = data[routers[i]].interfaces[g]
-      if(!inter.loopback){
-        text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
-      }
+      text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
     }
     text += "!\n"
   }
