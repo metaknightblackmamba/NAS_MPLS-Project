@@ -19,7 +19,8 @@
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0"
+    "ospf_area": "0",
+    "access_list": true
   },
   "R2": {
     "interfaces": [
@@ -40,7 +41,8 @@
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0"
+    "ospf_area": "0",
+    "access_list": true
   },
   "PE1": {
     "interfaces": [
@@ -49,19 +51,30 @@
       "port": "GigabitEthernet1/0",
       "mpls": true
     },
-      {
+    {
+      "router": "PC1",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+    },
+    {
       "loopback": true
     }],
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0"
+    "ospf_area": "0",
+    "access_list": true
   },
   "PE2": {
     "interfaces": [
       {
       "router": "R2",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+    },
+    {
+      "router": "PC2",
       "port": "GigabitEthernet2/0",
       "mpls": true
     },
@@ -72,6 +85,7 @@
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "0"
+    "ospf_area": "0",
+    "access_list": true
   }
 }

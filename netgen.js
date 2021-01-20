@@ -104,7 +104,14 @@ for (let i = 0; i < routers.length; i++) {
   text += "hostname " + routers[i] + "\n!\n"
   text += "boot-start-marker\nboot-end-marker\n!\n"
   text += "no aaa new-model\nno ip icmp rate-limit unreachable\nip cef\n!\n"
-  text += "no ip domain lookup\nno ipv6 cef\n!\n"
+  text += "no ip domain lookup\nno ipv6 cef\n!\n!\n"
+
+  text += "mpls label range " + ((i+1)*100) + " " + (((i+1)*100) + 99) + "\n"
+  text += "no mpls ldp advertise-labels\n"
+  text += "mpls ldp advertise-labels for 1\n"
+  text += "multilink bundle-name authenticated\n!\n!\n"
+
+  text += "ip tcp synwait-time 5\n!\n!\n"
 
   let _interface = 1
 
@@ -132,6 +139,24 @@ for (let i = 0; i < routers.length; i++) {
     }
     text += "!\n"
   }
+
+  text += "ip forward-protocol nd\n!\n!\n"
+  text += "no ip http server\n"
+  text += "no ip http secure-server\n!\n!\n!\n!\n"
+
+
+  if((data[routers[i]].access_list)){
+
+    for(let y = 1; y < current_loop; y++){
+      text += "access-list 1 deny   " + y + "." + y + "." + y + "." + y + "\n"
+    }
+
+    text += "access-list 1 permit any\n!\n!\n!\n!\n"
+
+  }
+
+
+  text += "control-plane\n!\n!\n"
 
   if(data[routers[i]].console){
     var pass_con = "password"
@@ -162,6 +187,8 @@ for (let i = 0; i < routers.length; i++) {
     text += "line vty 0 4\n login\n"
   }
 
+
+  text += "!\n!\nend\n"
   //Write text to conf file
   fs.writeFile(routers[i] + "_startup-config.cfg", text, function (err) {
   if (err) return console.log(err);
