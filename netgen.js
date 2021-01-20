@@ -2,6 +2,12 @@
 
 const fs = require("fs")
 
+if(process.argv.length != 3){
+  console.log("Please do:\n")
+  console.log("./netgen.js your_file.json\n")
+  process.exit()
+}
+
 function ipAndMask(_ip, _mask){
   ip = _ip.split(".")
   mask = _mask.split(".")
@@ -13,7 +19,7 @@ function invertMask(_mask){
   return (Math.abs(Number(mask[0]) - 255) + "." + Math.abs(Number(mask[1]) - 255) + "." + Math.abs(Number(mask[2]) - 255) + "." + Math.abs(Number(mask[3]) - 255))
 }
 
-let file = fs.readFileSync("norm.json")
+let file = fs.readFileSync(process.argv[2])
 let data = JSON.parse(file)
 
 //console.log(data.version)

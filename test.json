@@ -1,0 +1,77 @@
+{
+  "version": "15.2",
+  "R1": {
+    "interfaces": [
+      {
+      "router": "PE1",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
+      {
+      "router": "R2",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+    },
+    {
+       "loopback": true
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0"
+  },
+  "R2": {
+    "interfaces": [
+      {
+      "router": "PE2",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
+      {
+      "router": "R1",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+    },
+    {
+       "loopback": true
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0"
+  },
+  "PE1": {
+    "interfaces": [
+      {
+      "router": "R1",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+    },
+      {
+      "loopback": true
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0"
+  },
+  "PE2": {
+    "interfaces": [
+      {
+      "router": "R2",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+    },
+      {
+      "loopback": true
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0"
+  }
+}
