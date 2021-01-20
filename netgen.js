@@ -73,6 +73,8 @@ for (let i = 0; i < routers.length; i++) {
       data[routers[i]].interfaces[g].ip = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
       data[routers[i]].interfaces[g].mask = "255.255.255.255"
       data[routers[i]].interfaces[g].port = "Loopback0"
+      data[routers[i]].router_id = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
+      current_loop++
     }
 
 
@@ -117,6 +119,7 @@ for (let i = 0; i < routers.length; i++) {
 
   if(data[routers[i]].ospf_area){
     text += "router ospf 10000\n"
+    text += " router-id " + data[routers[i]].router_id + "\n"
     for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
       let inter = data[routers[i]].interfaces[g]
       text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
