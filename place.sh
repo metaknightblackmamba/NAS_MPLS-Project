@@ -1,4 +1,8 @@
 #!/bin/bash
+if [ $# -eq 0 ]; then
+ echo "enter the path to your GNS3 MPLS project"
+ exit 1
+fi
 
 file1="i1_startup-config.cfg"
 file2="i2_startup-config.cfg"
@@ -25,3 +29,4 @@ cp "./PE2_startup-config.cfg" $var4
 echo "###########################"
 echo "Fichiers copiés  =)"
 echo "###########################"
+exit 1

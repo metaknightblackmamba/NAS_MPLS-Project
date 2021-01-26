@@ -12,5 +12,9 @@ To run this project, install those dependancies:
 
 ## Run/build
 ```
-$ ./netgen.js
+$ ./netgen.js <reference_file.json>
+```
+## Copy generate file to GNS3 config
+```
+$ ./place.sh <path to your GNS3 project MPLS>
 ```
