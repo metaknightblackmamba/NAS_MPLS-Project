@@ -53,8 +53,6 @@ for (let i = 0; i < routers.length; i++) {
   for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
 
     let inter = data[routers[i]].interfaces[g]
-
-    if(!inter.loopback){
       //console.log(inter)
 
       let net_buff = null
@@ -88,18 +86,19 @@ for (let i = 0; i < routers.length; i++) {
       //console.log(net_buff)
       //console.log(network)
 
-    }
-    else{
-      data[routers[i]].interfaces[g].ip = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
-      data[routers[i]].interfaces[g].mask = "255.255.255.255"
-      data[routers[i]].interfaces[g].port = "Loopback0"
-      data[routers[i]].router_id = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
-      current_loop++
-    }
-
 
 
   }
+
+  // ADD LOOPBACK INTERFACE
+  let last_elem = data[routers[i]].interfaces.length
+  let buff = {}
+  buff.ip = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
+  buff.mask = "255.255.255.255"
+  buff.port = "Loopback0"
+  data[routers[i]].interfaces[last_elem] = buff
+  data[routers[i]].router_id = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
+  current_loop++
 
 }
 

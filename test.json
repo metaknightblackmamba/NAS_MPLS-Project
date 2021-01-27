@@ -11,9 +11,6 @@
       "router": "R2",
       "port": "GigabitEthernet2/0",
       "mpls": true
-    },
-    {
-       "loopback": true
     }],
     "console": false,
     "line_vty": false,
@@ -33,9 +30,6 @@
       "router": "R1",
       "port": "GigabitEthernet2/0",
       "mpls": true
-    },
-    {
-       "loopback": true
     }],
     "console": false,
     "line_vty": false,
@@ -54,9 +48,6 @@
     {
       "client": "PC1",
       "port": "GigabitEthernet2/0"
-    },
-    {
-      "loopback": true
     }],
     "console": false,
     "line_vty": false,
@@ -75,9 +66,6 @@
     {
       "client": "PC2",
       "port": "GigabitEthernet2/0"
-    },
-    {
-      "loopback": true
     }],
     "console": false,
     "line_vty": false,
