@@ -215,7 +215,7 @@ for (let i in clients) {
       text = "auto eth0\n"
       text += "iface eth0 inet static\n"
       text += "	address " + ipAddOne(data[i].interfaces[k].ip) + "\n"
-      text += "	netmask 255.255.255.0\n"
+      text += "	netmask " + data[i].interfaces[k].mask + "\n"
       text += "	gateway " + data[i].interfaces[k].ip + "\n"
 
       fs.writeFile(data[i].interfaces[k].client + "_interfaces", text, function (err) {
