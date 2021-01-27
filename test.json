@@ -52,9 +52,8 @@
       "mpls": true
     },
     {
-      "router": "PC1",
-      "port": "GigabitEthernet2/0",
-      "mpls": true
+      "client": "PC1",
+      "port": "GigabitEthernet2/0"
     },
     {
       "loopback": true
@@ -70,15 +69,14 @@
     "interfaces": [
       {
       "router": "R2",
-      "port": "GigabitEthernet2/0",
+      "port": "GigabitEthernet1/0",
       "mpls": true
     },
     {
-      "router": "PC2",
-      "port": "GigabitEthernet2/0",
-      "mpls": true
+      "client": "PC2",
+      "port": "GigabitEthernet2/0"
     },
-      {
+    {
       "loopback": true
     }],
     "console": false,

@@ -19,16 +19,24 @@ function invertMask(_mask){
   return (Math.abs(Number(mask[0]) - 255) + "." + Math.abs(Number(mask[1]) - 255) + "." + Math.abs(Number(mask[2]) - 255) + "." + Math.abs(Number(mask[3]) - 255))
 }
 
+function ipAddOne(_ip){
+  ip = _ip.split(".")
+  return (Number(ip[0]) + "." + Number(ip[1]) + "." + Number(ip[2]) + "." + (Number(ip[3]) + 1))
+}
+
+
+
 let file = fs.readFileSync(process.argv[2])
 let data = JSON.parse(file)
 
 //console.log(data.version)
 
 routers = []
+clients = {}
 
 // Add routers to routers array
 for(let k in data){
-  if(k != "version" ){
+  if(k != "version" && k != "clients"){
     routers.push(k)
   }
 }
@@ -63,7 +71,13 @@ for (let i = 0; i < routers.length; i++) {
       if(net_buff == null){
         array_buff = []
         array_buff.push(routers[i])
-        array_buff.push(inter.router)
+        if(inter.router){
+          array_buff.push(inter.router)
+        }
+        else{
+          array_buff.push(inter.client)
+          clients[routers[i]] = inter.client
+        }
         network[current_subnet] = array_buff
         net_buff = "192.168." + current_subnet + ".1"
         current_subnet++
@@ -88,9 +102,6 @@ for (let i = 0; i < routers.length; i++) {
   }
 
 }
-
-
-
 
 //For earch router that we do
 for (let i = 0; i < routers.length; i++) {
@@ -193,4 +204,24 @@ for (let i = 0; i < routers.length; i++) {
   fs.writeFile(routers[i] + "_startup-config.cfg", text, function (err) {
   if (err) return console.log(err);
   });
+}
+
+
+
+for (let i in clients) {
+
+  for (let k in data[i].interfaces){
+    if(data[i].interfaces[k].client){
+      text = "auto eth0\n"
+      text += "iface eth0 inet static\n"
+      text += "	address " + ipAddOne(data[i].interfaces[k].ip) + "\n"
+      text += "	netmask 255.255.255.0\n"
+      text += "	gateway " + data[i].interfaces[k].ip + "\n"
+
+      fs.writeFile(data[i].interfaces[k].client + "_interfaces", text, function (err) {
+      if (err) return console.log(err);
+      });
+      break
+    }
+  }
 }
