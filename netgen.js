@@ -113,7 +113,7 @@ for (let i = 0; i < routers.length; i++) {
   text += "service timestamps debug datetime msec\nservice timestamps log datetime msec\n!\n"
   text += "hostname " + routers[i] + "\n!\n"
   text += "boot-start-marker\nboot-end-marker\n!\n"
-  text += "no aaa new-model\nno ip icmp rate-limit unreachable\nip cef\n!\n"
+  text += "no aaa new-model\nip arp proxy disable\nno ip icmp rate-limit unreachable\nip cef\n!\n"
   text += "no ip domain lookup\nno ipv6 cef\n!\n!\n"
 
   text += "mpls label range " + ((i+1)*100) + " " + (((i+1)*100) + 99) + "\n"
