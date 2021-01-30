@@ -17,41 +17,41 @@ file9="interfaces"
 
 DIRECTORY="$1"
 
-#var1=$(find $DIRECTORY -name $file1 -print)
-#var2=$(find $DIRECTORY -name $file2 -print)
-#var3=$(find $DIRECTORY -name $file3 -print)
-#var4=$(find $DIRECTORY -name $file4 -print)
-#var5=$(find $DIRECTORY -name $file5 -print)
-#var6=$(find $DIRECTORY -name $file6 -print)
-#var7=$(find $DIRECTORY -name $file7 -print)
-#var8=$(find $DIRECTORY -name $file8 -print)
+var1=$(find $DIRECTORY -name $file1 -print)
+var2=$(find $DIRECTORY -name $file2 -print)
+var3=$(find $DIRECTORY -name $file3 -print)
+var4=$(find $DIRECTORY -name $file4 -print)
+var5=$(find $DIRECTORY -name $file5 -print)
+var6=$(find $DIRECTORY -name $file6 -print)
+var7=$(find $DIRECTORY -name $file7 -print)
+var8=$(find $DIRECTORY -name $file8 -print)
 var9=$(find $DIRECTORY -name $file9 -print)
 
 my_array=($(echo $var9 | tr " " "\n"))
 j=1
 for i in "${my_array[@]}"
-do
-    echo "copy from ./interface$j to $i"
+do  
+    cp "./PC"$j"_interfaces" $i
+    echo "copy from ./PC"$j"_interfaces to $i"
     j=$(($j+1))
 done
 
-
-#cp "./PE1_startup-config.cfg" $var1
-#echo "copy from ./PE1_startup-config.cfg to $var1"
-#cp "./R1_startup-config.cfg" $var2
-#echo "copy from ./R1_startup-config.cfg to $var2"
-#cp "./R2_startup-config.cfg" $var3
-#echo "copy from ./R2_startup-config.cfg to $var3"
-#cp "./PE2_startup-config.cfg" $var4
-#echo "copy from ./PE2_startup-config.cfg to $var4"
-#cp "./TC_CE1_startup-config.cfg" $var5
-#echo "copy from ./TC_CE1_startup-config.cfg to $var5"
-#cp "./IT_CE1_startup-config.cfg" $var6
-#echo "copy from ./IT_CE1_startup-config.cfg to $var6"
-#cp "./TC_CE2_startup-config.cfg" $var7
-#echo "copy from ./TC_CE2_startup-config.cfg to $var7"
-#cp "./IT_CE2_startup-config.cfg" $var8
-#echo "copy from ./IT_CE2_startup-config.cfg to $var8"
+cp "./PE1_startup-config.cfg" $var1
+echo "copy from ./PE1_startup-config.cfg to $var1"
+cp "./R1_startup-config.cfg" $var2
+echo "copy from ./R1_startup-config.cfg to $var2"
+cp "./R2_startup-config.cfg" $var3
+echo "copy from ./R2_startup-config.cfg to $var3"
+cp "./PE2_startup-config.cfg" $var4
+echo "copy from ./PE2_startup-config.cfg to $var4"
+cp "./TC_CE1_startup-config.cfg" $var5
+echo "copy from ./TC_CE1_startup-config.cfg to $var5"
+cp "./IT_CE1_startup-config.cfg" $var6
+echo "copy from ./IT_CE1_startup-config.cfg to $var6"
+cp "./TC_CE2_startup-config.cfg" $var7
+echo "copy from ./TC_CE2_startup-config.cfg to $var7"
+cp "./IT_CE2_startup-config.cfg" $var8
+echo "copy from ./IT_CE2_startup-config.cfg to $var8"
 
 echo "###########################"
 echo "Fichiers copiés  =)"
