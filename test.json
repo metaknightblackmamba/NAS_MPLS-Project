@@ -17,7 +17,7 @@
     "line_aux": false,
     "privileged_mode_secure": false,
     "ospf_area": "0",
-    "access_list": true
+    "access_list": false
   },
   "R2": {
     "interfaces": [
@@ -36,7 +36,7 @@
     "line_aux": false,
     "privileged_mode_secure": false,
     "ospf_area": "0",
-    "access_list": true
+    "access_list": false
   },
   "PE1": {
     "interfaces": [
@@ -47,18 +47,20 @@
     },
     {
       "router": "TC_CE1",
-      "port": "FastEthernet0/0"
+      "port": "FastEthernet0/0",
+      "vpn": "TC"
     },
     {
       "router": "IT_CE1",
-      "port": "GigabitEthernet2/0"
+      "port": "GigabitEthernet2/0",
+      "vpn": "IT"
     }],
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
     "ospf_area": "0",
-    "access_list": true
+    "access_list": false
   },
   "PE2": {
     "interfaces": [
@@ -69,18 +71,20 @@
     },
     {
       "router": "IT_CE2",
-      "port": "GigabitEthernet2/0"
+      "port": "GigabitEthernet2/0",
+      "vpn": "IT"
     },
     {
       "router": "TC_CE2",
-      "port": "FastEthernet0/0"
+      "port": "FastEthernet0/0",
+      "vpn": "TC"
     }],
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
     "ospf_area": "0",
-    "access_list": true
+    "access_list": false
   },
   "TC_CE1": {
     "interfaces": [
@@ -96,8 +100,8 @@
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "1",
-    "access_list": true
+    "ospf_area": "0",
+    "access_list": false
   },
   "IT_CE1": {
     "interfaces": [
@@ -113,8 +117,8 @@
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "1",
-    "access_list": true
+    "ospf_area": "0",
+    "access_list": false
   },
   "TC_CE2": {
     "interfaces": [
@@ -130,8 +134,8 @@
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "1",
-    "access_list": true
+    "ospf_area": "0",
+    "access_list": false
   },
   "IT_CE2": {
     "interfaces": [
@@ -147,7 +151,7 @@
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
-    "ospf_area": "1",
-    "access_list": true
+    "ospf_area": "0",
+    "access_list": false
   }
 }

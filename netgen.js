@@ -41,10 +41,12 @@ for(let k in data){
   }
 }
 
-console.log(routers.length + " routers found : " + routers)
+console.log(routers.length + " routers found : " + routers + "\n")
 
 network = {}
+vrfs = {}
 current_subnet = 100
+current_vrf = 100
 current_loop = 1
 subnet_host = {}
 
@@ -87,7 +89,16 @@ for (let i = 0; i < routers.length; i++) {
       //console.log(network)
 
 
-
+      if(inter.vpn){
+        let vrf_buff = false
+        if(inter.vpn in vrfs){
+          vrf_buff = true
+        }
+        if(vrf_buff == false){
+          vrfs[inter.vpn] = current_vrf
+          current_vrf++
+        }
+      }
   }
 
   // ADD LOOPBACK INTERFACE
@@ -102,7 +113,8 @@ for (let i = 0; i < routers.length; i++) {
 
 }
 
-//For earch router that we do
+
+//For earch router generate config file
 for (let i = 0; i < routers.length; i++) {
 
   //console.log(data[routers[i]].interfaces[0])
@@ -115,7 +127,7 @@ for (let i = 0; i < routers.length; i++) {
   text += "boot-start-marker\nboot-end-marker\n!\n"
   text += "no aaa new-model\nip arp proxy disable\nno ip icmp rate-limit unreachable\nip cef\n!\n"
   text += "no ip domain lookup\nno ipv6 cef\n!\n!\n"
-  
+
   if(data[routers[i]].interfaces[0].mpls == true){
     text += "mpls label range " + ((i+1)*100) + " " + (((i+1)*100) + 99) + "\n"
     text += "no mpls ldp advertise-labels\n"
@@ -132,24 +144,65 @@ for (let i = 0; i < routers.length; i++) {
 
     //text += "interface GigabitEthernet" + _interface + "/0\n"
     text += "interface " + inter.port + "\n"
+
     _interface++
+
+    if(inter.vpn){
+      text += " ip vrf forwarding " + inter.vpn
+    }
+
     text += " ip address " + inter.ip + " " + inter.mask + "\n"
-    text += " negotiation auto\n"
+
+    if(!inter.vpn){
+      text += " negotiation auto\n"
+    }
+    else{
+      text += " duplex full\n"
+    }
+
     if(inter.mpls){
       text += " mpls ip\n"
     }
     text += "!\n"
   }
 
-  if(data[routers[i]].ospf_area){
-    text += "router ospf 10000\n"
-    text += " router-id " + data[routers[i]].router_id + "\n"
+  //------------CONFIG OSPF FOR VPN
+  for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+    let inter = data[routers[i]].interfaces[g]
+    if(inter.vpn){
+      text += "router ospf " + (g + 1)  + " vrf " + inter.vpn + "\n"
+      text += " redistribute bgp 10000 subnets\n"
+      text += " network " + inter.ip + " " + invertMask(inter.mask) + " area 0\n!\n"
+
+    }
+  }
+
+  //-----------CONFIG GENERAL OSPF
+
+  if(routers[i].includes("CE")){
+    text += "router ospf 1\n"
     for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
       let inter = data[routers[i]].interfaces[g]
+      if(inter.client){
+        text += " passive-interface" + inter.port + "\n"
+      }
+    }
+  }
+  else{
+    text += "router ospf 10000\n"
+    text += " router-id " + data[routers[i]].router_id + "\n"
+  }
+
+  for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+    let inter = data[routers[i]].interfaces[g]
+    if(!inter.vpn){
       text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
     }
-    text += "!\n"
+
   }
+  text += "!\n"
+
+
 
   text += "ip forward-protocol nd\n!\n!\n"
   text += "no ip http server\n"
