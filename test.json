@@ -40,13 +40,17 @@
   },
   "PE1": {
     "interfaces": [
-      {
+    {
       "router": "R1",
       "port": "GigabitEthernet1/0",
       "mpls": true
     },
     {
-      "client": "PC1",
+      "router": "TC_CE1",
+      "port": "FastEthernet0/0"
+    },
+    {
+      "router": "IT_CE1",
       "port": "GigabitEthernet2/0"
     }],
     "console": false,
@@ -58,20 +62,92 @@
   },
   "PE2": {
     "interfaces": [
-      {
+    {
       "router": "R2",
       "port": "GigabitEthernet1/0",
       "mpls": true
     },
     {
-      "client": "PC2",
+      "router": "IT_CE2",
       "port": "GigabitEthernet2/0"
+    },
+    {
+      "router": "TC_CE2",
+      "port": "FastEthernet0/0"
     }],
     "console": false,
     "line_vty": false,
     "line_aux": false,
     "privileged_mode_secure": false,
     "ospf_area": "0",
+    "access_list": true
+  },
+  "TC_CE1": {
+    "interfaces": [
+      {
+      "router": "PE1",
+      "port": "FastEthernet0/0"
+      },
+      {
+      "client": "PC1",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "1",
+    "access_list": true
+  },
+  "IT_CE1": {
+    "interfaces": [
+      {
+      "router": "PE1",
+      "port": "GigabitEthernet2/0"
+      },
+      {
+      "client": "PC2",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "1",
+    "access_list": true
+  },
+  "TC_CE2": {
+    "interfaces": [
+      {
+      "router": "PE2",
+      "port": "FastEthernet0/0"
+      },
+      {
+      "client": "PC3",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "1",
+    "access_list": true
+  },
+  "IT_CE2": {
+    "interfaces": [
+      {
+      "router": "PE2",
+      "port": "GigabitEthernet2/0"
+      },
+      {
+      "client": "PC4",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "1",
     "access_list": true
   }
 }
