@@ -101,15 +101,17 @@ for (let i = 0; i < routers.length; i++) {
       }
   }
 
-  // ADD LOOPBACK INTERFACE
-  let last_elem = data[routers[i]].interfaces.length
-  let buff = {}
-  buff.ip = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
-  buff.mask = "255.255.255.255"
-  buff.port = "Loopback0"
-  data[routers[i]].interfaces[last_elem] = buff
-  data[routers[i]].router_id = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
-  current_loop++
+  // ADD LOOPBACK INTERFACE (NOT FOR CEs)
+  if(!routers[i].includes("CE")){
+    let last_elem = data[routers[i]].interfaces.length
+    let buff = {}
+    buff.ip = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
+    buff.mask = "255.255.255.255"
+    buff.port = "Loopback0"
+    data[routers[i]].interfaces[last_elem] = buff
+    data[routers[i]].router_id = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
+    current_loop++
+  }
 
 }
 
@@ -126,6 +128,21 @@ for (let i = 0; i < routers.length; i++) {
   text += "hostname " + routers[i] + "\n!\n"
   text += "boot-start-marker\nboot-end-marker\n!\n"
   text += "no aaa new-model\nip arp proxy disable\nno ip icmp rate-limit unreachable\nip cef\n!\n"
+
+  for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+    let inter = data[routers[i]].interfaces[g]
+    if(inter.vpn){
+
+      text += "ip vrf " + inter.vpn + "\n"
+      text += " rd 10000:" + vrfs[inter.vpn] + "\n"
+      text += " route-target export 10000:" + vrfs[inter.vpn] + "\n"
+      text += " route-target import 10000:" + vrfs[inter.vpn] + "\n!\n"
+
+    }
+  }
+
+
+
   text += "no ip domain lookup\nno ipv6 cef\n!\n!\n"
 
   if(data[routers[i]].interfaces[0].mpls == true){
@@ -148,7 +165,7 @@ for (let i = 0; i < routers.length; i++) {
     _interface++
 
     if(inter.vpn){
-      text += " ip vrf forwarding " + inter.vpn
+      text += " ip vrf forwarding " + inter.vpn + "\n"
     }
 
     text += " ip address " + inter.ip + " " + inter.mask + "\n"
@@ -172,7 +189,7 @@ for (let i = 0; i < routers.length; i++) {
     if(inter.vpn){
       text += "router ospf " + (g + 1)  + " vrf " + inter.vpn + "\n"
       text += " redistribute bgp 10000 subnets\n"
-      text += " network " + inter.ip + " " + invertMask(inter.mask) + " area 0\n!\n"
+      text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area 0\n!\n"
 
     }
   }
@@ -184,7 +201,7 @@ for (let i = 0; i < routers.length; i++) {
     for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
       let inter = data[routers[i]].interfaces[g]
       if(inter.client){
-        text += " passive-interface" + inter.port + "\n"
+        text += " passive-interface " + inter.port + "\n"
       }
     }
   }
