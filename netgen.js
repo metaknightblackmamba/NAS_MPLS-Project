@@ -157,8 +157,8 @@ for (let i = 0; i < routers.length; i++) {
   }
   if(test_mpls == true){
     text += "mpls label range " + ((i+1)*100) + " " + (((i+1)*100) + 99) + "\n"
-    text += "no mpls ldp advertise-labels\n"
-    text += "mpls ldp advertise-labels for 1\n"
+    //text += "no mpls ldp advertise-labels\n"
+    //text += "mpls ldp advertise-labels for 1\n"
     text += "multilink bundle-name authenticated\n!\n!\n"
   }
   text += "ip tcp synwait-time 5\n!\n!\n"
