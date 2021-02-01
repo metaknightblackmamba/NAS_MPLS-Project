@@ -60,6 +60,7 @@
     "line_aux": false,
     "privileged_mode_secure": false,
     "ospf_area": "0",
+    "bgp": true,
     "access_list": false
   },
   "PE2": {
@@ -84,6 +85,7 @@
     "line_aux": false,
     "privileged_mode_secure": false,
     "ospf_area": "0",
+    "bgp": true,
     "access_list": false
   },
   "TC_CE1": {

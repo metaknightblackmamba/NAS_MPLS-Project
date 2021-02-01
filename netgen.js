@@ -45,6 +45,7 @@ console.log(routers.length + " routers found : " + routers + "\n")
 
 network = {}
 vrfs = {}
+bgp = {}
 current_subnet = 100
 current_vrf = 100
 current_loop = 1
@@ -110,11 +111,13 @@ for (let i = 0; i < routers.length; i++) {
     buff.port = "Loopback0"
     data[routers[i]].interfaces[last_elem] = buff
     data[routers[i]].router_id = current_loop + "." + current_loop + "." + current_loop + "." + current_loop
+    if(data[routers[i]].bgp){
+      bgp[routers[i]] = buff.ip
+    }
     current_loop++
   }
 
 }
-
 
 //For earch router generate config file
 for (let i = 0; i < routers.length; i++) {
@@ -145,7 +148,14 @@ for (let i = 0; i < routers.length; i++) {
 
   text += "no ip domain lookup\nno ipv6 cef\n!\n!\n"
 
-  if(data[routers[i]].interfaces[0].mpls == true){
+  test_mpls = false
+
+  for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+    if(data[routers[i]].interfaces[g].mpls == true){
+      test_mpls = true
+    }
+  }
+  if(test_mpls == true){
     text += "mpls label range " + ((i+1)*100) + " " + (((i+1)*100) + 99) + "\n"
     text += "no mpls ldp advertise-labels\n"
     text += "mpls ldp advertise-labels for 1\n"
@@ -215,11 +225,45 @@ for (let i = 0; i < routers.length; i++) {
     if(!inter.vpn){
       text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area " + data[routers[i]].ospf_area + "\n"
     }
-
   }
   text += "!\n"
 
+  //----------------CONFG BGP
 
+  if(routers[i].includes("PE")){
+
+    text += "router bgp 10000\n"
+    text += " bgp log-neighbor-changes\n"
+    for (let g in bgp){
+      if(g != routers[i]){
+        text += " neighbor " + bgp[g] + " remote-as 10000\n"
+        text += " neighbor " + bgp[g] + " update-source Loopback0\n"
+      }
+    }
+    text += "!\n"
+
+    text += " address-family vpnv4\n"
+    for (let g in bgp){
+      if(g != routers[i]){
+        text += "  neighbor " + bgp[g] + " activate\n"
+        text += "  neighbor " + bgp[g] + " send-community extended\n"
+        text += "  neighbor " + bgp[g] + " next-hop-self\n"
+      }
+    }
+    text += " exit-address-family\n!\n"
+
+    if(data[routers[i]].bgp){
+      for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+        let inter = data[routers[i]].interfaces[g]
+        if(inter.vpn){
+          text += " address-family ipv4 vrf " + inter.vpn + "\n"
+          text += "  redistribute ospf " + (g + 1) + "\n"
+          text += " exit-address-family\n!\n"
+        }
+      }
+    }
+
+  }
 
   text += "ip forward-protocol nd\n!\n!\n"
   text += "no ip http server\n"
