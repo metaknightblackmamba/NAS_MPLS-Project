@@ -89,14 +89,14 @@ for (let i = 0; i < routers.length; i++) {
       //console.log(net_buff)
       //console.log(network)
 
-
+      //GENERATE VRFs FOR VPNs
       if(inter.vpn){
         let vrf_buff = false
-        if(inter.vpn in vrfs){
+        if(inter.vpn.name in vrfs){
           vrf_buff = true
         }
         if(vrf_buff == false){
-          vrfs[inter.vpn] = current_vrf
+          vrfs[inter.vpn.name] = current_vrf
           current_vrf++
         }
       }
@@ -136,10 +136,27 @@ for (let i = 0; i < routers.length; i++) {
     let inter = data[routers[i]].interfaces[g]
     if(inter.vpn){
 
-      text += "ip vrf " + inter.vpn + "\n"
-      text += " rd 10000:" + vrfs[inter.vpn] + "\n"
-      text += " route-target export 10000:" + vrfs[inter.vpn] + "\n"
-      text += " route-target import 10000:" + vrfs[inter.vpn] + "\n!\n"
+      text += "ip vrf " + inter.vpn.name + "\n"
+      text += " rd 10000:" + vrfs[inter.vpn.name] + "\n"
+      text += " route-target export 10000:" + vrfs[inter.vpn.name] + "\n"
+      text += " route-target import 10000:" + vrfs[inter.vpn.name] + "\n"
+
+      let link_list = inter.vpn.PE_link
+      let already = []
+
+      for(let h in link_list){
+        for(let j = 0 ; j < data[link_list[h]].interfaces.length ; j++){
+          let inter = data[link_list[h]].interfaces[j]
+          if(inter.vpn){
+            if(!already.includes(vrfs[inter.vpn.name])){
+              text += " route-target import 10000:" + vrfs[inter.vpn.name] + "\n"
+              already.push(vrfs[inter.vpn.name])
+            }
+          }
+        }
+      }
+
+      text += "!\n"
 
     }
   }
@@ -175,10 +192,14 @@ for (let i = 0; i < routers.length; i++) {
     _interface++
 
     if(inter.vpn){
-      text += " ip vrf forwarding " + inter.vpn + "\n"
+      text += " ip vrf forwarding " + inter.vpn.name + "\n"
     }
 
     text += " ip address " + inter.ip + " " + inter.mask + "\n"
+
+    if(inter.access_list){
+      text += " ip access-group " + inter.access_list.number + " out\n"
+    }
 
     if(!inter.vpn){
       text += " negotiation auto\n"
@@ -197,7 +218,7 @@ for (let i = 0; i < routers.length; i++) {
   for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
     let inter = data[routers[i]].interfaces[g]
     if(inter.vpn){
-      text += "router ospf " + (g + 1)  + " vrf " + inter.vpn + "\n"
+      text += "router ospf " + (g + 1)  + " vrf " + inter.vpn.name + "\n"
       text += " redistribute bgp 10000 subnets\n"
       text += " network " + ipAndMask(inter.ip, inter.mask) + " " + invertMask(inter.mask) + " area 0\n!\n"
 
@@ -256,7 +277,7 @@ for (let i = 0; i < routers.length; i++) {
       for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
         let inter = data[routers[i]].interfaces[g]
         if(inter.vpn){
-          text += " address-family ipv4 vrf " + inter.vpn + "\n"
+          text += " address-family ipv4 vrf " + inter.vpn.name + "\n"
           text += "  redistribute ospf " + (g + 1) + "\n"
           text += " exit-address-family\n!\n"
         }
@@ -270,47 +291,37 @@ for (let i = 0; i < routers.length; i++) {
   text += "no ip http secure-server\n!\n!\n!\n!\n"
 
 
-  if((data[routers[i]].access_list)){
+  for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
+    let inter = data[routers[i]].interfaces[g]
+    if(inter.access_list){
+      let allowed = inter.access_list.networks
 
-    for(let y = 1; y < current_loop; y++){
-      text += "access-list 1 deny   " + y + "." + y + "." + y + "." + y + "\n"
+      for(let h in allowed){
+        for(let g = 0 ; g < data[allowed[h]].interfaces.length ; g++){
+          let inter_network = data[allowed[h]].interfaces[g]
+          if(inter_network.client){
+            text += "access-list " + inter.access_list.number + " permit " + ipAndMask(inter_network.ip,inter_network.mask)+ " " + invertMask(inter_network.mask) + "\n"
+          }
+        }
+      }
+
+
     }
 
-    text += "access-list 1 permit any\n!\n!\n!\n!\n"
-
   }
+
+  text += "!\n"
 
 
   text += "control-plane\n!\n!\n"
 
-  if(data[routers[i]].console){
-    var pass_con = "password"
-    text += "!\n"
-    text += "line con 0\n exec-timeout 0 0\n privilege level 15\n password " + pass_con +"\n logging synchronous\n login\n stopbits 1\n"
-  }else{
-    text += "!\n"
-    text += "line con 0\n exec-timeout 0 0\n privilege level 15\n logging synchronous\n stopbits 1\n"
-  }
 
-  if(data[routers[i]].line_aux){
-    var pass_aux = "password"
-    text += "!\n"
-    text += "line aux 0\n exec-timeout 0 0\n privilege level 15\n password " + pass_aux +"\n logging synchronous\n login\n stopbits 1\n"
-  }else{
-    text += "!\n"
-    text += "line aux 0\n exec-timeout 0 0\n privilege level 15\n logging synchronous\n stopbits 1\n"
-  }
-
-  if(data[routers[i]].line_vty){
-    var pass_vty04 = "password"
-    var pass_vty515 = "password"
-    text += "!\n"
-    text += "line vty 0 4\n password " + pass_vty04 +"\n login\n"
-    text += "line vty 5 15\n password " + pass_vty515 +"\n login\n"
-  }else{
-    text += "!\n"
-    text += "line vty 0 4\n login\n"
-  }
+  text += "!\n"
+  text += "line con 0\n exec-timeout 0 0\n privilege level 15\n logging synchronous\n stopbits 1\n"
+  text += "!\n"
+  text += "line aux 0\n exec-timeout 0 0\n privilege level 15\n logging synchronous\n stopbits 1\n"
+  text += "!\n"
+  text += "line vty 0 4\n login\n"
 
 
   text += "!\n!\nend\n"
@@ -335,7 +346,7 @@ for (let i in clients) {
       fs.writeFile(data[i].interfaces[k].client + "_interfaces", text, function (err) {
       if (err) return console.log(err);
       });
-      break
+      //break
     }
   }
 }

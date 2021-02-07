@@ -40,7 +40,7 @@ var20=$(find $DIRECTORY -name $file20 -print)
 my_array=($(echo $var20 | tr " " "\n"))
 j=1
 for i in "${my_array[@]}"
-do  
+do
     cp "./PC"$j"_interfaces" $i
     echo "copy from ./PC"$j"_interfaces to $i"
     j=$(($j+1))

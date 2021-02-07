@@ -17,12 +17,7 @@
      "port": "FastEthernet0/0",
      "mpls": true
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "R2": {
     "interfaces": [
@@ -41,12 +36,7 @@
       "port": "FastEthernet0/0",
       "mpls": true
       }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "R3": {
     "interfaces": [
@@ -65,12 +55,7 @@
      "port": "FastEthernet0/0",
      "mpls": true
      }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "R4": {
     "interfaces": [
@@ -89,12 +74,7 @@
      "port": "FastEthernet0/0",
      "mpls": true
      }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "PE1": {
     "interfaces": [
@@ -106,20 +86,21 @@
     {
       "router": "TC_CE1",
       "port": "FastEthernet0/0",
-      "vpn": "TC"
+      "vpn": {
+        "name":"TC",
+        "PE_link":["PE3"]
+      }
     },
     {
       "router": "IT_CE1",
       "port": "GigabitEthernet2/0",
-      "vpn": "IT"
+      "vpn": {
+        "name":"IT",
+        "PE_link":["PE3"]
+      }
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
     "ospf_area": "0",
-    "bgp": true,
-    "access_list": false
+    "bgp": true
   },
   "PE2": {
     "interfaces": [
@@ -131,27 +112,31 @@
     {
       "router": "IT_CE2",
       "port": "GigabitEthernet2/0",
-      "vpn": "IT"
+      "vpn": {
+        "name": "IT",
+        "PE_link": ["PE3"]
+      }
     },
     {
       "router": "TC_CE2",
       "port": "FastEthernet0/0",
-      "vpn": "TC"
+      "vpn": {
+        "name":"TC",
+        "PE_link": ["PE3"]
+      }
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
     "ospf_area": "0",
-    "bgp": true,
-    "access_list": false
+    "bgp": true
   },
   "PE3": {
     "interfaces": [
     {
       "router": "CE_Commun",
       "port": "GigabitEthernet1/0",
-      "mpls": true
+      "vpn":{
+         "name": "COMMUN",
+         "PE_link": ["PE1","PE2"]
+        }
     },
     {
       "router": "R3",
@@ -163,13 +148,8 @@
       "port": "FastEthernet0/0",
       "mpls": true
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
     "ospf_area": "0",
-    "bgp": true,
-    "access_list": false
+    "bgp": true
   },
   "TC_CE1": {
     "interfaces": [
@@ -181,12 +161,7 @@
       "client": "PC1",
       "port": "GigabitEthernet1/0"
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "IT_CE1": {
     "interfaces": [
@@ -198,12 +173,7 @@
       "client": "PC2",
       "port": "GigabitEthernet1/0"
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "TC_CE2": {
     "interfaces": [
@@ -215,12 +185,7 @@
       "client": "PC3",
       "port": "GigabitEthernet1/0"
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "IT_CE2": {
     "interfaces": [
@@ -232,12 +197,7 @@
       "client": "PC4",
       "port": "GigabitEthernet1/0"
     }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   },
   "CE_Commun": {
     "interfaces": [
@@ -247,17 +207,20 @@
       },
       {
       "client": "PC5",
-      "port": "FastEthernet0/0"
+      "port": "FastEthernet0/0",
+      "access_list": {
+        "number": 1,
+        "networks": ["TC_CE1","TC_CE2"]
+      }
       },
       {
-      "router": "PC6",
-      "port": "GigabitEthernet2/0"
+      "client": "PC6",
+      "port": "GigabitEthernet2/0",
+      "access_list": {
+        "number": 2,
+        "networks": ["IT_CE1","IT_CE2"]
+      }
       }],
-    "console": false,
-    "line_vty": false,
-    "line_aux": false,
-    "privileged_mode_secure": false,
-    "ospf_area": "0",
-    "access_list": false
+    "ospf_area": "0"
   }
 }
