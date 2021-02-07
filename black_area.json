@@ -1,0 +1,263 @@
+{
+  "version": "15.2",
+  "R1": {
+    "interfaces": [
+      {
+      "router": "PE1",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
+      {
+      "router": "R2",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+     },
+     {
+     "router": "R3",
+     "port": "FastEthernet0/0",
+     "mpls": true
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "R2": {
+    "interfaces": [
+      {
+      "router": "PE2",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
+      {
+      "router": "R1",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+      },
+      {
+      "router": "R4",
+      "port": "FastEthernet0/0",
+      "mpls": true
+      }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "R3": {
+    "interfaces": [
+      {
+      "router": "R4",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
+      {
+      "router": "PE3",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+     },
+     {
+     "router": "R1",
+     "port": "FastEthernet0/0",
+     "mpls": true
+     }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "R4": {
+    "interfaces": [
+      {
+      "router": "R3",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+      },
+      {
+      "router": "R2",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+     },
+     {
+     "router": "PE3",
+     "port": "FastEthernet0/0",
+     "mpls": true
+     }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "PE1": {
+    "interfaces": [
+    {
+      "router": "R1",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+    },
+    {
+      "router": "TC_CE1",
+      "port": "FastEthernet0/0",
+      "vpn": "TC"
+    },
+    {
+      "router": "IT_CE1",
+      "port": "GigabitEthernet2/0",
+      "vpn": "IT"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "bgp": true,
+    "access_list": false
+  },
+  "PE2": {
+    "interfaces": [
+    {
+      "router": "R2",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+    },
+    {
+      "router": "IT_CE2",
+      "port": "GigabitEthernet2/0",
+      "vpn": "IT"
+    },
+    {
+      "router": "TC_CE2",
+      "port": "FastEthernet0/0",
+      "vpn": "TC"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "bgp": true,
+    "access_list": false
+  },
+  "PE3": {
+    "interfaces": [
+    {
+      "router": "CE_Commun",
+      "port": "GigabitEthernet1/0",
+      "mpls": true
+    },
+    {
+      "router": "R3",
+      "port": "GigabitEthernet2/0",
+      "mpls": true
+    },
+    {
+      "router": "R4",
+      "port": "FastEthernet0/0",
+      "mpls": true
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "bgp": true,
+    "access_list": false
+  },
+  "TC_CE1": {
+    "interfaces": [
+      {
+      "router": "PE1",
+      "port": "FastEthernet0/0"
+      },
+      {
+      "client": "PC1",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "IT_CE1": {
+    "interfaces": [
+      {
+      "router": "PE1",
+      "port": "GigabitEthernet2/0"
+      },
+      {
+      "client": "PC2",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "TC_CE2": {
+    "interfaces": [
+      {
+      "router": "PE2",
+      "port": "FastEthernet0/0"
+      },
+      {
+      "client": "PC3",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "IT_CE2": {
+    "interfaces": [
+      {
+      "router": "PE2",
+      "port": "GigabitEthernet2/0"
+      },
+      {
+      "client": "PC4",
+      "port": "GigabitEthernet1/0"
+    }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  },
+  "CE_Commun": {
+    "interfaces": [
+      {
+      "router": "PE3",
+      "port": "GigabitEthernet1/0"
+      },
+      {
+      "client": "PC5",
+      "port": "FastEthernet0/0"
+      },
+      {
+      "router": "PC6",
+      "port": "GigabitEthernet2/0"
+      }],
+    "console": false,
+    "line_vty": false,
+    "line_aux": false,
+    "privileged_mode_secure": false,
+    "ospf_area": "0",
+    "access_list": false
+  }
+}
