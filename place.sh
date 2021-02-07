@@ -12,8 +12,12 @@ file5="i5_startup-config.cfg"
 file6="i6_startup-config.cfg"
 file7="i7_startup-config.cfg"
 file8="i8_startup-config.cfg"
+file9="i9_startup-config.cfg"
+file10="i10_startup-config.cfg"
+file11="i11_startup-config.cfg"
+file12="i12_startup-config.cfg"
 
-file9="interfaces"
+file20="interfaces"
 
 DIRECTORY="$1"
 
@@ -26,8 +30,14 @@ var6=$(find $DIRECTORY -name $file6 -print)
 var7=$(find $DIRECTORY -name $file7 -print)
 var8=$(find $DIRECTORY -name $file8 -print)
 var9=$(find $DIRECTORY -name $file9 -print)
+var10=$(find $DIRECTORY -name $file10 -print)
+var11=$(find $DIRECTORY -name $file11 -print)
+var12=$(find $DIRECTORY -name $file12 -print)
 
-my_array=($(echo $var9 | tr " " "\n"))
+
+var20=$(find $DIRECTORY -name $file20 -print)
+
+my_array=($(echo $var20 | tr " " "\n"))
 j=1
 for i in "${my_array[@]}"
 do  
@@ -52,6 +62,14 @@ cp "./TC_CE2_startup-config.cfg" $var7
 echo "copy from ./TC_CE2_startup-config.cfg to $var7"
 cp "./IT_CE2_startup-config.cfg" $var8
 echo "copy from ./IT_CE2_startup-config.cfg to $var8"
+cp "./R3_startup-config.cfg" $var9
+echo "copy from ./R3_startup-config.cfg to $var9"
+cp "./R4_startup-config.cfg" $var10
+echo "copy from ./R4_startup-config.cfg to $var10"
+cp "./PE3_startup-config.cfg" $var11
+echo "copy from ./PE3_startup-config.cfg to $var11"
+cp "./CE_Commun_startup-config.cfg" $var12
+echo "copy from ./CE_Commun_startup-config.cfg to $var12"
 
 echo "###########################"
 echo "Fichiers copiés  =)"
