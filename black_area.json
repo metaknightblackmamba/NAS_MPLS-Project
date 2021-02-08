@@ -88,7 +88,8 @@
       "port": "FastEthernet0/0",
       "vpn": {
         "name":"TC",
-        "PE_link":["PE3"]
+        "route_targets_import": ["TC","COMMUN"],
+        "route_targets_export": ["TC"]
       }
     },
     {
@@ -96,7 +97,8 @@
       "port": "GigabitEthernet2/0",
       "vpn": {
         "name":"IT",
-        "PE_link":["PE3"]
+        "route_targets_import": ["IT","COMMUN"],
+        "route_targets_export": ["IT"]
       }
     }],
     "ospf_area": "0",
@@ -114,7 +116,8 @@
       "port": "GigabitEthernet2/0",
       "vpn": {
         "name": "IT",
-        "PE_link": ["PE3"]
+        "route_targets_import": ["IT","COMMUN"],
+        "route_targets_export": ["IT"]
       }
     },
     {
@@ -122,7 +125,8 @@
       "port": "FastEthernet0/0",
       "vpn": {
         "name":"TC",
-        "PE_link": ["PE3"]
+        "route_targets_import": ["TC","COMMUN"],
+        "route_targets_export": ["TC"]
       }
     }],
     "ospf_area": "0",
@@ -135,7 +139,8 @@
       "port": "GigabitEthernet1/0",
       "vpn":{
          "name": "COMMUN",
-         "PE_link": ["PE1","PE2"]
+         "route_targets_import": ["COMMUN","IT","TC"],
+         "route_targets_export": ["COMMUN"]
         }
     },
     {

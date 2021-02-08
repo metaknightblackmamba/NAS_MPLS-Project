@@ -138,23 +138,32 @@ for (let i = 0; i < routers.length; i++) {
 
       text += "ip vrf " + inter.vpn.name + "\n"
       text += " rd 10000:" + vrfs[inter.vpn.name] + "\n"
-      text += " route-target export 10000:" + vrfs[inter.vpn.name] + "\n"
-      text += " route-target import 10000:" + vrfs[inter.vpn.name] + "\n"
 
-      let link_list = inter.vpn.PE_link
-      let already = []
 
-      for(let h in link_list){
-        for(let j = 0 ; j < data[link_list[h]].interfaces.length ; j++){
-          let inter = data[link_list[h]].interfaces[j]
-          if(inter.vpn){
-            if(!already.includes(vrfs[inter.vpn.name])){
-              text += " route-target import 10000:" + vrfs[inter.vpn.name] + "\n"
-              already.push(vrfs[inter.vpn.name])
-            }
-          }
+      //text += " route-target export 10000:" + vrfs[inter.vpn.name] + "\n"
+      //text += " route-target import 10000:" + vrfs[inter.vpn.name] + "\n"
+
+
+      // ADD OTHER PE'S VPN
+
+      if(inter.vpn.route_targets_import){
+        let link_list = inter.vpn.route_targets_import
+
+        for(let h in link_list){
+          text += " route-target import 10000:" + vrfs[link_list[h]] + "\n"
         }
       }
+
+      if(inter.vpn.route_targets_export){
+        let link_list = inter.vpn.route_targets_export
+
+        for(let h in link_list){
+          text += " route-target export 10000:" + vrfs[link_list[h]] + "\n"
+        }
+      }
+
+
+
 
       text += "!\n"
 
