@@ -49,23 +49,19 @@ bgp = {}
 current_subnet = 100
 current_vrf = 100
 current_loop = 1
-subnet_host = {}
 
 for (let i = 0; i < routers.length; i++) {
 
   for (let g = 0 ; g < data[routers[i]].interfaces.length ; g++){
 
     let inter = data[routers[i]].interfaces[g]
-      //console.log(inter)
 
       let net_buff = null
 
       for(let k in network){
-        //console.log(network[k])
-        //console.log("self " + routers[i] + " other " + inter.router)
+
         if((network[k].includes(routers[i])) && (network[k].includes(inter.router))){
           net_buff = "192.168." + k + "." + (network[k].indexOf(routers[i]) + 1)
-          //console.log(net_buff)
         }
       }
 
@@ -86,8 +82,6 @@ for (let i = 0; i < routers.length; i++) {
 
       data[routers[i]].interfaces[g].ip = net_buff
       data[routers[i]].interfaces[g].mask = "255.255.255.0"
-      //console.log(net_buff)
-      //console.log(network)
 
       //GENERATE VRFs FOR VPNs
       if(inter.vpn){
@@ -122,7 +116,6 @@ for (let i = 0; i < routers.length; i++) {
 //For earch router generate config file
 for (let i = 0; i < routers.length; i++) {
 
-  //console.log(data[routers[i]].interfaces[0])
 
   //Creat text for conf file
   text = "!\n\n!\n"
@@ -138,11 +131,6 @@ for (let i = 0; i < routers.length; i++) {
 
       text += "ip vrf " + inter.vpn.name + "\n"
       text += " rd 10000:" + vrfs[inter.vpn.name] + "\n"
-
-
-      //text += " route-target export 10000:" + vrfs[inter.vpn.name] + "\n"
-      //text += " route-target import 10000:" + vrfs[inter.vpn.name] + "\n"
-
 
       // ADD OTHER PE'S VPN
 
@@ -161,9 +149,6 @@ for (let i = 0; i < routers.length; i++) {
           text += " route-target export 10000:" + vrfs[link_list[h]] + "\n"
         }
       }
-
-
-
 
       text += "!\n"
 
@@ -195,7 +180,6 @@ for (let i = 0; i < routers.length; i++) {
 
     let inter = data[routers[i]].interfaces[g]
 
-    //text += "interface GigabitEthernet" + _interface + "/0\n"
     text += "interface " + inter.port + "\n"
 
     _interface++
@@ -355,7 +339,6 @@ for (let i in clients) {
       fs.writeFile(data[i].interfaces[k].client + "_interfaces", text, function (err) {
       if (err) return console.log(err);
       });
-      //break
     }
   }
 }
