@@ -225,6 +225,10 @@
         "number": 2,
         "networks": ["IT_CE1","IT_CE2"]
       }
+      },
+      {
+      "client": "PC7",
+      "port": "GigabitEthernet3/0"
       }],
     "ospf_area": "0"
   }
