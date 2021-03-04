@@ -290,12 +290,39 @@ for (let i = 0; i < routers.length; i++) {
       let allowed = inter.access_list.networks
 
       for(let h in allowed){
-        for(let g = 0 ; g < data[allowed[h]].interfaces.length ; g++){
-          let inter_network = data[allowed[h]].interfaces[g]
-          if(inter_network.client){
-            text += "access-list " + inter.access_list.number + " permit " + ipAndMask(inter_network.ip,inter_network.mask)+ " " + invertMask(inter_network.mask) + "\n"
+
+        if(data[allowed[h]]){
+          for(let g = 0 ; g < data[allowed[h]].interfaces.length ; g++){
+            let inter_network = data[allowed[h]].interfaces[g]
+            if(inter_network.client){
+              text += "access-list " + inter.access_list.number + " permit " + ipAndMask(inter_network.ip,inter_network.mask)+ " " + invertMask(inter_network.mask) + "\n"
+            }
           }
         }
+        else{
+
+          let parent_client = null
+
+          console.log(allowed)
+
+          for(let g in clients){
+            if(clients[g] == allowed[h]){
+              parent_client = g
+              console.log("found")
+              break
+            }
+          }
+
+          for(let g = 0 ; g < data[parent_client].interfaces.length ; g++){
+            let inter_network = data[parent_client].interfaces[g]
+            if(inter_network.client == allowed[h]){
+              text += "access-list " + inter.access_list.number + " permit " + ipAndMask(inter_network.ip,inter_network.mask)+ " " + invertMask(inter_network.mask) + "\n"
+            }
+          }
+        }
+
+
+
       }
 
 

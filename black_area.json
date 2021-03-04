@@ -215,7 +215,7 @@
       "port": "FastEthernet0/0",
       "access_list": {
         "number": 1,
-        "networks": ["TC_CE1","TC_CE2"]
+        "networks": ["TC_CE1","TC_CE2","PC7"]
       }
       },
       {
@@ -223,7 +223,7 @@
       "port": "GigabitEthernet2/0",
       "access_list": {
         "number": 2,
-        "networks": ["IT_CE1","IT_CE2"]
+        "networks": ["IT_CE1","IT_CE2","PC7"]
       }
       },
       {
